@@ -73,10 +73,10 @@
                 {
                     "data": {
                         "entity_id": "plex_controller",
-                        "password": "football00",
-                        "server_address": "192.168.1.50",
+                        "password": "<password>",
+                        "server_address": "<server ip>",
                         "server_port": 32400,
-                        "username": "nickprice@corsicanescape.com"
+                        "username": "<username>"
                     },
                     "friendly_name": "Plex",
                     "friendly_name_search_term": "Plex",
@@ -90,17 +90,17 @@
                 {
                     "data": {
                         "entity_id": "netflix_controller",
-                        "adb_server_address": "192.168.1.50",
-                        "firetv_address": "192.168.1.130:5555",
-                        "netflix_country_code": "NL",
-                        "api_token": "c265f197admsh68df130af976b95p196d23jsn3d48f642215e"
+                        "adb_server_address": "<adb server ip>",
+                        "firetv_address": "<fire tv ip>:5555",
+                        "netflix_country_code": "<country code, i.e. NL, GB>",
+                        "api_token": "<rapid api token>"
                     },
                     "friendly_name": "Netflix",
                     "friendly_name_search_term": "Netflix",
                     "id": "netflix_abc"
                 }
             ],
-            "mdns": "_plexmedia._tcp"
+            "mdns": "_netflixfiretv._tcp"
         }
     },
     "settings": {
@@ -110,7 +110,7 @@
         "logging": {
             "console": true,
             "level": "DEBUG",
-            "path": "/home/nick/projects/yio/binaries/log/",
+            "path": "~/projects/yio/binaries/log/",
             "purgeHours": 72,
             "queueSize": 100,
             "showSource": true
@@ -140,18 +140,10 @@
                     "plex_controller",
                     "netflix_controller"
                 ],
-                "name": "Nick",
+                "name": "Base Profile",
                 "pages": [
                     "favorites",
                     "settings"
-                ]
-            },
-            "4c336609-e6fa-9847-42a5-135bb96283a2": {
-                "favorites": [
-                ],
-                "name": "Asha",
-                "pages": [
-                    "favorites"
                 ]
             }
         },
