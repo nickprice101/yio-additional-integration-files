@@ -183,11 +183,17 @@ void MediaPlayer::setBrowseModel(QObject *model) {
     emit browseModelChanged(model);
 }
 
+void MediaPlayer::setSpeakerModel(QObject *model) {
+    m_speakerModel = model;
+    emit speakerModelChanged(model);
+}
+
 MediaPlayer::MediaPlayer(const QVariantMap &config, IntegrationInterface *integrationObj, QObject *parent)
     : Entity(Type, config, integrationObj, parent),
       m_volume(0),
       m_muted(false),
       m_searchModel(nullptr),
+      m_speakerModel(nullptr),
       m_browseModel(nullptr) {
     static QMetaEnum metaEnumAttr;
     static QMetaEnum metaEnumFeatures;

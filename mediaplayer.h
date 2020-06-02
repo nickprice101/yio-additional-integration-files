@@ -47,6 +47,7 @@ class MediaPlayer : public Entity, MediaPlayerInterface {
     Q_PROPERTY(QString source READ source NOTIFY sourceChanged)
     Q_PROPERTY(QObject* searchModel READ searchModel NOTIFY searchModelChanged)
     Q_PROPERTY(QObject* browseModel READ browseModel NOTIFY browseModelChanged)
+    Q_PROPERTY(QObject* speakerModel READ speakerModel NOTIFY speakerModelChanged)
     Q_PROPERTY(QVariant recentSearches READ recentSearches WRITE setrecentSearches NOTIFY recentSearchesChanged)
 
     int     volume() override { return m_volume; }
@@ -62,6 +63,7 @@ class MediaPlayer : public Entity, MediaPlayerInterface {
     // extension for media browsing
     QObject* searchModel() { return m_searchModel; }
     QObject* browseModel() { return m_browseModel; }
+    QObject* speakerModel() { return m_speakerModel; }
     QVariant recentSearches() { return m_recentSearches; }
 
     void setrecentSearches(QVariant list);
@@ -98,6 +100,7 @@ class MediaPlayer : public Entity, MediaPlayerInterface {
 
     void setSearchModel(QObject* model) override;
     void setBrowseModel(QObject* model) override;
+    void setSpeakerModel(QObject* model) override;
 
     // constructor
     MediaPlayer(const QVariantMap& config, IntegrationInterface* integrationObj, QObject* parent = nullptr);
@@ -114,6 +117,7 @@ class MediaPlayer : public Entity, MediaPlayerInterface {
     void sourceChanged();
     void searchModelChanged();
     void browseModelChanged(QObject* model);
+    void speakerModelChanged(QObject* model);
     void recentSearchesChanged();
 
  public:
@@ -139,9 +143,10 @@ class MediaPlayer : public Entity, MediaPlayerInterface {
      *                         playlists:       array of {id, title, subtitle, image_url, array of commands}
      *                         movies:          array of {id, title, subtitle, image_url, array of commands}
      *                         shows:           array of {id, title, subtitle, image_url, array of commands}
-     *                         episodes:       array of {id, title, subtitle, image_url, array of commands}
+     *                         episodes:        array of {id, title, subtitle, image_url, array of commands}
      *                         }
      */
     QObject* m_browseModel = nullptr;
+    QObject* m_speakerModel = nullptr;
     QVariant m_recentSearches;
 };

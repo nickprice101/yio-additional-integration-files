@@ -129,6 +129,7 @@ class MediaPlayerInterface {
 
     virtual void setSearchModel(QObject* model) = 0;
     virtual void setBrowseModel(QObject* model) = 0;
+    virtual void setSpeakerModel(QObject* model) = 0;
 };
 
 QT_BEGIN_NAMESPACE

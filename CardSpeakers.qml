@@ -36,7 +36,7 @@ Rectangle {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // VARIABLES
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    property var speakerBrowseModel
+    property var speakerModel
     property bool isCurrentItem: parent._currentItem
     property bool start: true
 
@@ -45,7 +45,7 @@ Rectangle {
             console.debug("LOAD SPEAKERS");
             start = false;
             obj.getSpeakers();
-            obj.browseModelChanged.connect(onFirstLoadComplete);
+            obj.speakerModelChanged.connect(onFirstLoadComplete);
         }
         if (!isCurrentItem) {
             speakerListView.contentY = 0-120;
@@ -57,16 +57,17 @@ Rectangle {
     // FUNCTIONS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function onFirstLoadComplete(model) {
-        main.speakerBrowseModel = model.model;
-        obj.browseModelChanged.disconnect(onFirstLoadComplete);
+        main.speakerModel = model.model;
+        obj.speakerModelChanged.disconnect(onFirstLoadComplete);
     }
 
-    function onBrowseModelChanged(model) {
-        if (speakerLoader) {
-                speakerLoader.item.albumModel = model;
-                speakerLoader.item.itemFlickable.contentY = 0;
-        }
-        obj.browseModelChanged.disconnect(onBrowseModelChanged);
+    function onSpeakerModelChanged(model) {
+        //if (speakerLoader) {
+                //speakerLoader.item.albumModel = model;
+                //speakerLoader.item.itemFlickable.contentY = 0;
+        //}
+        main.speakerModel = model.model;
+        obj.speakerModelChanged.disconnect(onSpeakerModelChanged);
     }
 
 
@@ -98,7 +99,7 @@ Rectangle {
                 cacheBuffer: 3000
 
                 delegate: speakerThumbnail
-                model: main.speakerBrowseModel
+                model: main.speakerModel
 
                 ScrollBar.vertical: ScrollBar {
                     opacity: 0.5
