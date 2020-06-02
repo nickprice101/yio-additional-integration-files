@@ -33,28 +33,21 @@ Rectangle {
     color: Style.color.dark
     radius: Style.cornerRadius
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // VARIABLES
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    property var speakerModel
+    property var playListBrowseModel
     property bool isCurrentItem: parent._currentItem
     property bool start: true
 
     onIsCurrentItemChanged: {
         if (isCurrentItem && start) {
-            console.debug("LOAD SPEAKERS");
             start = false;
-            console.debug("obj.friendly_name: " + obj.friendly_name);
-            if (main === null) { console.debug("Main is null"); } else { console.debug("Main is not null"); }
-            obj.speakerModelChanged.connect(onFirstLoadComplete);
-            obj.getSpeakers();
-            console.debug("getSpeakers complete");
-            //obj.speakerModelChanged.connect(onFirstLoadComplete);
-            //obj.speakerModelChanged.connect(onSpeakerModelChanged);
+            obj.browseModelChanged.connect(onFirstLoadComplete);
+            obj.getPlaylist("user");
         }
         if (!isCurrentItem) {
-            speakerListView.contentY = 0-120;
+            playListListView.contentY = 0-120;
         }
     }
 
@@ -63,19 +56,28 @@ Rectangle {
     // FUNCTIONS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function onFirstLoadComplete(model) {
-        console.debug("SPEAKER MODEL ON FIRST LOAD COMPLETE");
-        if (main !== null) { main.speakerModel = model.model; }
-        obj.speakerModelChanged.disconnect(onFirstLoadComplete);
+        main.playListBrowseModel = model.model;
+        obj.browseModelChanged.disconnect(onFirstLoadComplete);
     }
 
-    function onSpeakerModelChanged(model) { // use this perhaps for more details on the speaker?
-        console.debug("SPEAKER MODEL CHANGED");
-        //if (speakerLoader) {
-                //speakerLoader.item.albumModel = model;
-                //speakerLoader.item.itemFlickable.contentY = 0;
-        //}
-        main.speakerModel = model.model;
-        obj.speakerModelChanged.disconnect(onSpeakerModelChanged);
+    function load(album, type) {
+        swipeView.currentIndex++;
+        if (type === "playlist") {
+            obj.getPlaylist(album);
+            obj.browseModelChanged.connect(onBrowseModelChanged);
+        }
+    }
+
+    function onBrowseModelChanged(model) {
+        if (playlistLoader) {
+            if (playlistLoader.source != "qrc:/components/media_player/ui/AlbumView.qml")
+                playlistLoader.setSource("qrc:/components/media_player/ui/AlbumView.qml", { "albumModel": model })
+            else if (playlistLoader.item) {
+                playlistLoader.item.albumModel = model;
+                playlistLoader.item.itemFlickable.contentY = 0;
+            }
+        }
+        obj.browseModelChanged.disconnect(onBrowseModelChanged);
     }
 
 
@@ -92,10 +94,10 @@ Rectangle {
         clip: true
 
         Item {
-            property alias speakerListView: speakerListView
+            property alias playListListView: playListListView
 
             ListView {
-                id: speakerListView
+                id: playListListView
                 width: parent.width; height: parent.height-100
                 spacing: 20
                 anchors { top: parent.top; horizontalCenter: parent.horizontalCenter }
@@ -106,8 +108,8 @@ Rectangle {
                 clip: true
                 cacheBuffer: 3000
 
-                delegate: speakerThumbnail
-                model: main.speakerModel
+                delegate: playListThumbnail
+                model: main.playListBrowseModel
 
                 ScrollBar.vertical: ScrollBar {
                     opacity: 0.5
@@ -120,7 +122,7 @@ Rectangle {
                         Text {
                             id: title
                             color: Style.color.text
-                            text: qsTr("My players") + translateHandler.emptyString
+                            text: qsTr("My playlists") + translateHandler.emptyString
                             font { family: "Open Sans Bold"; weight: Font.Bold; pixelSize: 40 }
                             lineHeight: 1
                             anchors { left: parent.left; leftMargin: 30; top: parent.top; topMargin: 30 }
@@ -139,15 +141,15 @@ Rectangle {
             }
 
             Component {
-                id: speakerThumbnail
+                id: playListThumbnail
 
                 Item {
-                    id: speakerThumbnailItem
+                    id: trackThumbnailItem
                     width: parent.width-60; height: 80
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     Rectangle {
-                        id: speakerImage
+                        id: albumImage
                         width: 80; height: 80
 
                         Image {
@@ -159,27 +161,27 @@ Rectangle {
                     }
 
                     Text {
-                        id: speakerNameText
-                        text: item_name
+                        id: albumTitleText
+                        text: item_title
                         elide: Text.ElideRight
-                        width: itemFlickable.width-60-speakerImage.width-20-80
+                        width: itemFlickable.width-60-albumImage.width-20-80
                         wrapMode: Text.NoWrap
                         color: Style.color.text
-                        anchors { left: speakerImage.right; leftMargin: 20; top: speakerImage.top; topMargin: item_description == "" ? 26 : 12 }
+                        anchors { left: albumImage.right; leftMargin: 20; top: albumImage.top; topMargin: item_subtitle == "" ? 26 : 12 }
                         font { family: "Open Sans Regular"; pixelSize: 25 }
                         lineHeight: 1
                     }
 
                     Text {
-                        id: speakerDescriptionText
-                        text: item_description
+                        id: albumSubTitleText
+                        text: item_subtitle
                         elide: Text.ElideRight
-                        visible: item_description == "" ? false : true
-                        width: speakerNameText.width
+                        visible: item_subtitle == "" ? false : true
+                        width: albumTitleText.width
                         wrapMode: Text.NoWrap
                         color: Style.color.text
                         opacity: 0.6
-                        anchors { left: speakerNameText.left; top: speakerNameText.bottom; topMargin: 5 }
+                        anchors { left: albumTitleText.left; top: albumTitleText.bottom; topMargin: 5 }
                         font { family: "Open Sans Regular"; pixelSize: 20 }
                         lineHeight: 1
                     }
@@ -188,8 +190,8 @@ Rectangle {
                         anchors.fill: parent
 
                         onClicked: {
-                            //Haptic.playEffect(Haptic.Click);
-                            //load(item_key, item_type);
+                            Haptic.playEffect(Haptic.Click);
+                            load(item_key, item_type);
                         }
                     }
 
@@ -205,5 +207,35 @@ Rectangle {
             }
         }
 
+        Item {
+
+            Loader {
+                id: playlistLoader
+                asynchronous: true
+                anchors.fill: parent
+            }
+
+            Text {
+                id: backButton
+                color: Style.color.text
+                text: Style.icon.left_arrow
+                renderType: Text.NativeRendering
+                width: 70; height: 70
+                verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter
+                font {family: "icons"; pixelSize: 80 }
+                anchors { left: parent.left; leftMargin: 10; top: parent.top; topMargin: 20 }
+
+                MouseArea {
+                    id: backButtonMouseArea
+                    width: parent.width + 20; height: parent.height + 20
+                    anchors.centerIn: parent
+
+                    onClicked: {
+                        Haptic.playEffect(Haptic.Click);
+                        swipeView.currentIndex = 0;
+                    }
+                }
+            }
+        }
     }
 }

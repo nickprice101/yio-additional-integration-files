@@ -27,26 +27,28 @@
 #include <QVariant>
 #include <QtDebug>
 
-class ModelItem {
+class SpeakerModelItem {
  public:
-    ModelItem(const QString& key, const QString& name, const QString& subtitle, const QString& type,
-              const QString& imageUrl, const QVariant& commands)
-        : m_key(key), m_name(name), m_subtitle(subtitle), m_type(type), m_imageUrl(imageUrl), m_commands(commands) {}
+    SpeakerModelItem(const QString& key, const QString& name, const QString& description, const QString& type,
+              const QString& imageUrl, const QVariant& commands, const QVariant& supported)
+        : m_key(key), m_name(name), m_description(description), m_type(type), m_imageUrl(imageUrl), m_commands(commands), m_supported(supported) {}
 
     QString  item_key() const { return m_key; }
     QString  item_name() const { return m_name; }
-    QString  item_subtitle() const { return m_subtitle; }
+    QString  item_description() const { return m_description; }
     QString  item_type() const { return m_type; }
     QString  item_imageUrl() const { return m_imageUrl; }
     QVariant item_commands() const { return m_commands; }
+    QVariant item_supported() const { return m_supported; }
 
  private:
     QString  m_key;
     QString  m_name;
-    QString  m_subtitle;
+    QString  m_description;
     QString  m_type;
     QString  m_imageUrl;
     QVariant m_commands;
+    QVariant m_supported;
 };
 
 class SpeakerListModel : public QAbstractListModel {
@@ -54,7 +56,7 @@ class SpeakerListModel : public QAbstractListModel {
     Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 
  public:
-    enum SearchRoles { KeyRole = Qt::UserRole + 1, NameRole, SubTitleRole, TypeRole, ImageUrlRole, CommandsRole };
+    enum SearchRoles { KeyRole = Qt::UserRole + 1, NameRole, DescriptionRole, TypeRole, ImageUrlRole, CommandsRole, SupportedRole };
 
     explicit SpeakerListModel(QObject* parent = nullptr);
     ~SpeakerListModel() {}
@@ -64,7 +66,7 @@ class SpeakerListModel : public QAbstractListModel {
     QVariant               data(const QModelIndex& index, int role = Qt::DisplayRole) const;
     QHash<int, QByteArray> roleNames() const;
 
-    void append(const ModelItem& o);
+    void append(const SpeakerModelItem& o);
 
  public slots:  // NOLINT open issue: https://github.com/cpplint/cpplint/pull/99
     void setCount(int count);
@@ -74,54 +76,58 @@ class SpeakerListModel : public QAbstractListModel {
 
  private:
     int              m_count;
-    QList<ModelItem> m_data;
+    QList<SpeakerModelItem> m_data;
 };
 
 class SpeakerModel : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString id READ id NOTIFY idChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
-    Q_PROPERTY(QString subtitle READ subtitle NOTIFY subtitleChanged)
+    Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(QString type READ type NOTIFY typeChanged)
     Q_PROPERTY(QString imageUrl READ imageUrl NOTIFY imageUrlChanged)
     Q_PROPERTY(QObject* model READ model NOTIFY modelChanged)
     Q_PROPERTY(QStringList commands READ commands NOTIFY commandsChanged)
+    Q_PROPERTY(QStringList supported READ supported NOTIFY supportedChanged)
 
  public:
     SpeakerModel(QObject* parent = nullptr, const QString& id = "", const QString& name = "",
-                const QString& subtitle = "", const QString& type = "", const QString& imageUrl = "",
-                const QStringList& commands = {})
-        : m_id(id), m_name(name), m_subtitle(subtitle), m_type(type), m_imageUrl(imageUrl), m_commands(commands) {
+                const QString& description = "", const QString& type = "", const QString& imageUrl = "",
+                const QStringList& commands = {}, const QStringList& supported = {})
+        : m_id(id), m_name(name), m_description(description), m_type(type), m_imageUrl(imageUrl), m_commands(commands) {
         Q_UNUSED(parent)
     }
     ~SpeakerModel() {}
 
     QString     id() { return m_id; }
     QString     name() { return m_name; }
-    QString     subtitle() { return m_subtitle; }
+    QString     description() { return m_description; }
     QString     type() { return m_type; }
     QString     imageUrl() { return m_imageUrl; }
     QObject*    model() { return m_model; }
     QStringList commands() { return m_commands; }
+    QStringList supported() { return m_supported; }
 
-    void addItem(const QString& key, const QString& name, const QString& subtitle, const QString& type,
-                 const QString& imageUrl, const QVariant& commands);
+    void addItem(const QString& key, const QString& name, const QString& description, const QString& type,
+                 const QString& imageUrl, const QVariant& commands, const QVariant& supported);
 
  signals:
     void idChanged();
     void nameChanged();
-    void subtitleChanged();
+    void descriptionChanged();
     void typeChanged();
     void imageUrlChanged();
     void modelChanged();
     void commandsChanged();
+    void supportedChanged();
 
  private:
     QString     m_id;
     QString     m_name;
-    QString     m_subtitle;
+    QString     m_description;
     QString     m_type;
     QString     m_imageUrl;
     QObject*    m_model = new SpeakerListModel();
     QStringList m_commands;
+    QStringList m_supported;
 };

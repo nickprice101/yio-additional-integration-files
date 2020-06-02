@@ -33,20 +33,22 @@ int SpeakerListModel::rowCount(const QModelIndex &p) const {
 
 QVariant SpeakerListModel::data(const QModelIndex &index, int role) const {
     if (index.row() < 0 || index.row() >= m_data.count()) return QVariant();
-    const ModelItem &item = m_data[index.row()];
+    const SpeakerModelItem &item = m_data[index.row()];
     switch (role) {
         case KeyRole:
             return item.item_key();
         case NameRole:
             return item.item_name();
-        case SubTitleRole:
-            return item.item_subtitle();
+        case DescriptionRole:
+            return item.item_description();
         case TypeRole:
             return item.item_type();
         case ImageUrlRole:
             return item.item_imageUrl();
         case CommandsRole:
             return item.item_commands();
+        case SupportedRole:
+            return item.item_supported();
     }
     return QVariant();
 }
@@ -55,14 +57,15 @@ QHash<int, QByteArray> SpeakerListModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[KeyRole] = "item_key";
     roles[NameRole] = "item_name";
-    roles[SubTitleRole] = "item_subtitle";
+    roles[DescriptionRole] = "item_description";
     roles[TypeRole] = "item_type";
     roles[ImageUrlRole] = "item_image";
     roles[CommandsRole] = "item_commands";
+    roles[SupportedRole] = "item_supported";
     return roles;
 }
 
-void SpeakerListModel::append(const ModelItem &o) {
+void SpeakerListModel::append(const SpeakerModelItem &o) {
     int i = m_data.size();
     beginInsertRows(QModelIndex(), i, i);
     m_data.append(o);
@@ -80,10 +83,10 @@ void SpeakerListModel::setCount(int count) {
     emit countChanged(m_count);
 }
 
-void SpeakerModel::addItem(const QString &key, const QString &name, const QString &subtitle, const QString &type,
-                          const QString &imageUrl, const QVariant &commands) {
+void SpeakerModel::addItem(const QString &key, const QString &name, const QString &description, const QString &type,
+                          const QString &imageUrl, const QVariant &commands, const QVariant &supported) {
     SpeakerListModel *model = static_cast<SpeakerListModel *>(m_model);
-    ModelItem  item = ModelItem(key, name, subtitle, type, imageUrl, commands);
+    SpeakerModelItem  item = SpeakerModelItem(key, name, description, type, imageUrl, commands, supported);
     model->append(item);
     emit modelChanged();
 }

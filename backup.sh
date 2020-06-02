@@ -1,7 +1,7 @@
 #!/bin/bash
 cp ~/projects/yio/remote-software/components/media_player/ui/CardSpeakers.qml ~/projects/yio/backups/
 cp ~/projects/yio/remote-software/components/media_player/ui/CardSearch.qml ~/projects/yio/backups/
-cp ~/projects/yio/remote-software/components/media_player/ui/CardPlaylist.qml ~/projects/yio/backups/
+cp ~/projects/yio/remote-software/components/media_player/ui/CardPlaylists.qml ~/projects/yio/backups/
 cp ~/projects/yio/remote-software/components/media_player/ui/Card.qml ~/projects/yio/backups/
 
 cp ~/projects/yio/remote-software/basic_ui/ContextMenu.qml ~/projects/yio/backups/
