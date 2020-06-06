@@ -62,7 +62,15 @@
                     "SHUFFLE",
                     "SEARCH",
                     "SPEAKER_CONTROL",
-                    "LIST"
+                    "LIST",
+                    "CURSOR_UP",
+                    "CURSOR_DOWN",
+                    "CURSOR_LEFT",
+                    "CURSOR_RIGHT",
+                    "CURSOR_OK",
+                    "BACK",
+                    "HOME",
+                    "MENU"
                 ]
             }
         ]
