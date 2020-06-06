@@ -130,6 +130,15 @@ void MediaPlayer::next() { command(MediaPlayerDef::C_NEXT, ""); }
 void MediaPlayer::setVolume(int value) { command(MediaPlayerDef::C_VOLUME_SET, value); }
 void MediaPlayer::volumeUp() { command(MediaPlayerDef::C_VOLUME_UP, ""); }
 void MediaPlayer::volumeDown() { command(MediaPlayerDef::C_VOLUME_DOWN, ""); }
+// navigation
+void MediaPlayer::cursorUp() { command(MediaPlayerDef::C_CURSOR_UP, ""); }
+void MediaPlayer::cursorDown() { command(MediaPlayerDef::C_CURSOR_DOWN, ""); }
+void MediaPlayer::cursorLeft() { command(MediaPlayerDef::C_CURSOR_LEFT, ""); }
+void MediaPlayer::cursorRight() { command(MediaPlayerDef::C_CURSOR_RIGHT, ""); }
+void MediaPlayer::cursorOK() { command(MediaPlayerDef::C_CURSOR_OK, ""); }
+void MediaPlayer::back() { command(MediaPlayerDef::C_BACK, ""); }
+void MediaPlayer::home() { command(MediaPlayerDef::C_HOME, ""); }
+void MediaPlayer::menu() { command(MediaPlayerDef::C_MENU, ""); }
 
 bool MediaPlayer::supportsOn() {
     if (isSupported(MediaPlayerDef::F_TURN_ON) && isSupported(MediaPlayerDef::F_TURN_OFF)) {

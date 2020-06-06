@@ -62,6 +62,31 @@ Rectangle {
                 volume.volumeUp = false;
                 volume.start();
                 break;
+            case ButtonHandler.DPAD_UP:
+                if (obj.isSupported(Remote.F_CURSOR_UP)) {
+                    obj.cursorUp();
+                }
+                break;
+            case ButtonHandler.DPAD_DOWN:
+                if (obj.isSupported(Remote.F_CURSOR_DOWN)) {
+                    obj.cursorDown();
+                }
+                break;
+            case ButtonHandler.DPAD_LEFT:
+                if (obj.isSupported(Remote.F_CURSOR_LEFT)) {
+                    obj.cursorLeft();
+                }
+                break;
+            case ButtonHandler.DPAD_RIGHT:
+                if (obj.isSupported(Remote.F_CURSOR_RIGHT)) {
+                    obj.cursorRight();
+                }
+                break;
+            case ButtonHandler.DPAD_MIDDLE:
+                if (obj.isSupported(Remote.F_CURSOR_OK)) {
+                    obj.cursorOK();
+                }
+                break;
             }
         }
 

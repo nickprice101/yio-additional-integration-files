@@ -78,7 +78,17 @@ class MediaPlayerDef : public QObject {
         F_VOLUME_SET,
         F_VOLUME_UP,
         F_LIST,
-        F_SPEAKER_CONTROL
+        F_SPEAKER_CONTROL,
+
+        // navigation
+        F_CURSOR_UP,
+        F_CURSOR_DOWN,
+        F_CURSOR_LEFT,
+        F_CURSOR_RIGHT,
+        F_CURSOR_OK,
+        F_BACK,
+        F_HOME,
+        F_MENU
     };
     Q_ENUM(Features)
 
@@ -104,7 +114,17 @@ class MediaPlayerDef : public QObject {
         C_SHUFFLE_PLAY,
         C_ADD_TO_QUEUE,
         C_CHANGE_SPEAKER,
-        C_GET_SPEAKERS
+        C_GET_SPEAKERS,
+
+        // navigation
+        C_CURSOR_UP,
+        C_CURSOR_DOWN,
+        C_CURSOR_LEFT,
+        C_CURSOR_RIGHT,
+        C_CURSOR_OK,
+        C_BACK,
+        C_HOME,
+        C_MENU
     };
     Q_ENUM(Commands)
 

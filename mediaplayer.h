@@ -77,6 +77,15 @@ class MediaPlayer : public Entity, MediaPlayerInterface {
     Q_INVOKABLE void setVolume(int value);
     Q_INVOKABLE void volumeUp();
     Q_INVOKABLE void volumeDown();
+    // navigation
+    Q_INVOKABLE void cursorUp();
+    Q_INVOKABLE void cursorDown();
+    Q_INVOKABLE void cursorLeft();
+    Q_INVOKABLE void cursorRight();
+    Q_INVOKABLE void cursorOK();
+    Q_INVOKABLE void back();
+    Q_INVOKABLE void home();
+    Q_INVOKABLE void menu();
 
     bool isOn() override { return m_state == MediaPlayerDef::ON || m_state == MediaPlayerDef::PLAYING; }
     bool supportsOn() override;
