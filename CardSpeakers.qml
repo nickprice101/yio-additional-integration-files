@@ -45,7 +45,7 @@ Rectangle {
         if (isCurrentItem && start) {
             console.debug("LOAD SPEAKERS");
             start = false;
-            console.debug("obj.friendly_name: " + obj.friendly_name);
+            //console.debug("obj.friendly_name: " + obj.friendly_name);
             if (main === null) { console.debug("Main is null"); } else { console.debug("Main is not null"); }
             obj.speakerModelChanged.connect(onFirstLoadComplete);
             obj.getSpeakers();

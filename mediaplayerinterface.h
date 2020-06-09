@@ -25,6 +25,7 @@
 #include <QObject>
 
 #include "yio-model/mediaplayer/searchmodel_mediaplayer.h"
+#include "yio-model/mediaplayer/speakermodel_mediaplayer.h" // not sure this is needed here.
 
 /// This class is a work arround to make the feature enum available in the interface and in the specifc entity class.
 /// Qt cannot create metadata describing an enum contained in the interface
